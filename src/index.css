@@ -1,0 +1,266 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   IGNITE — Vismaya · Global design system
+   Deep-space observatory · editorial science magazine
+   ============================================================ */
+
+:root {
+  --obsidian: #07090d;
+  --midnight: #0d1117;
+  --graphite: #121820;
+  --steel: #171f29;
+  --charcoal: #26303b;
+  --ice: #f5f7fa;
+  --silver: #a7b0bc;
+  --slate: #66717e;
+  --amber: #ffb800;
+  --gold: #ffd166;
+  --electric: #5b8cff;
+  --supernova: #38d9ff;
+  --red: #ff5c5c;
+  --photo: #e8e8e8;
+
+  /* Dynamic accent — overridden per club on event pages */
+  --accent: #ffb800;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--obsidian);
+  color: var(--ice);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Deep-space base gradient + nebulae (CSS, behind the WebGL canvas) */
+.space-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(1200px 800px at 78% 22%, rgba(38, 48, 59, 0.55), transparent 60%),
+    radial-gradient(900px 700px at 18% 80%, rgba(20, 28, 48, 0.5), transparent 60%),
+    radial-gradient(1400px 1000px at 50% 50%, rgba(11, 16, 32, 0.5), transparent 70%),
+    linear-gradient(180deg, #05060a 0%, #07090d 45%, #0a1020 100%);
+}
+
+/* very subtle, large-scale nebula gradients — never overpowering */
+.nebula {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 40% at 82% 30%, rgba(91, 140, 255, 0.05), transparent 60%),
+    radial-gradient(50% 45% at 12% 18%, rgba(120, 90, 200, 0.045), transparent 65%),
+    radial-gradient(45% 40% at 70% 85%, rgba(255, 184, 0, 0.035), transparent 60%);
+  filter: blur(8px);
+}
+
+::selection {
+  background: rgba(255, 184, 0, 0.25);
+  color: #fff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #05060a;
+}
+::-webkit-scrollbar-thumb {
+  background: #26303b;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #36434f;
+}
+
+/* ---------- Typography helpers ---------- */
+.font-display {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+}
+
+.display-hero {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+}
+
+.tracking-ultra {
+  letter-spacing: 0.35em;
+}
+.tracking-wide2 {
+  letter-spacing: 0.18em;
+}
+
+.label-tech {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--slate);
+}
+
+.num-tech {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ---------- Glassmorphism (restrained) ---------- */
+.glass {
+  background: linear-gradient(
+    160deg,
+    rgba(23, 31, 41, 0.55),
+    rgba(13, 17, 23, 0.4)
+  );
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  border: 1px solid rgba(38, 48, 59, 0.9);
+  box-shadow:
+    0 40px 80px -40px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 0 rgba(245, 247, 250, 0.05);
+}
+
+/* Crystalline thin border */
+.crystal {
+  border: 1px solid var(--charcoal);
+  position: relative;
+}
+.crystal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(245, 247, 250, 0.04);
+  pointer-events: none;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--amber);
+  color: var(--obsidian);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  padding: 0.95rem 1.6rem;
+  border: 1px solid var(--amber);
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s, color 0.4s, transform 0.4s;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  color: var(--ice);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  padding: 0.95rem 1.6rem;
+  border: 1px solid var(--charcoal);
+  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s,
+    background 0.4s;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+/* ---------- Focus visibility (a11y) ---------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+/* ---------- Thin technical divider ---------- */
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--charcoal) 20%,
+    var(--charcoal) 80%,
+    transparent
+  );
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
