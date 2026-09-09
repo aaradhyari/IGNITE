@@ -68,13 +68,14 @@ export default function Hero() {
       className="relative flex min-h-[100svh] items-center overflow-hidden pt-20 lg:pt-24"
       aria-label="IGNITE — Vismaya, The Age of Wonder"
     >
-      {/* Observatory dial layer */}
-      <div className="absolute inset-0 lg:left-[38%] lg:right-0">
+      {/* Aurora backdrop — full bleed */}
+      <div className="absolute inset-0">
         <HeroVisual className="h-full w-full" />
       </div>
 
-      {/* Mobile readability scrim */}
+      {/* Readability fades */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/70 to-transparent lg:hidden" />
+      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-obsidian/80 via-obsidian/30 to-transparent lg:block" />
 
       {/* Floating technical metadata (NEAR depth) */}
       <div className="pointer-events-none absolute left-5 top-24 hidden animate-floatySlow flex-col gap-1 lg:flex xl:left-12">
@@ -84,9 +85,9 @@ export default function Hero() {
         </span>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto grid w-full max-w-editorial grid-cols-1 items-center gap-10 px-5 sm:px-8 lg:grid-cols-2 lg:gap-6 lg:px-12">
-        <div className="max-w-xl">
+      {/* Content — single editorial column */}
+      <div className="relative z-10 mx-auto w-full max-w-editorial px-5 sm:px-8 lg:px-12">
+        <div className="max-w-2xl">
           <p className="label-tech text-amber">
             SCIENCE • TECHNOLOGY • CREATIVITY
           </p>
@@ -125,14 +126,24 @@ export default function Hero() {
           {/* Countdown — lives inside Hero.jsx */}
           <Countdown />
 
-          {/* Accessible companion text for the observatory visual */}
+          {/* Accessible companion text for the layered backdrop */}
           <p className="sr-only">
-            Observatory dial marking Innovation, IT, Photography and Robotics around Indore, India.
+            Earth horizon at sunrise over a starfield. IGNITE event location: Indore, Madhya Pradesh, India.
           </p>
-        </div>
 
-        {/* spacer column on desktop so text stays left of the globe */}
-        <div className="hidden lg:block" aria-hidden="true" />
+          {/* Index strip */}
+          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-charcoal/70 pt-5">
+            <span className="num-tech text-[10px] tracking-[0.22em] text-slate">
+              SEC_01 // HERO
+            </span>
+            <span className="num-tech text-[10px] tracking-[0.22em] text-slate">
+              INDEX REF: VIS-26.11
+            </span>
+            <span className="num-tech text-[10px] tracking-[0.22em] text-slate">
+              22.72°N · 75.86°E
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Scroll cue */}
