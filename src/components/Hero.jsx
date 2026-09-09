@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import Globe from './Globe.jsx'
+import { useEffect, useState } from 'react'
+import HeroVisual from './HeroVisual.jsx'
 
 // Target: 23 November 2026, 00:00 IST (UTC+5:30)
 const TARGET = new Date('2026-11-23T00:00:00+05:30').getTime()
@@ -68,9 +68,9 @@ export default function Hero() {
       className="relative flex min-h-[100svh] items-center overflow-hidden pt-20 lg:pt-24"
       aria-label="IGNITE — Vismaya, The Age of Wonder"
     >
-      {/* Globe layer */}
+      {/* Observatory dial layer */}
       <div className="absolute inset-0 lg:left-[38%] lg:right-0">
-        <Globe className="h-full w-full" />
+        <HeroVisual className="h-full w-full" />
       </div>
 
       {/* Mobile readability scrim */}
@@ -125,9 +125,9 @@ export default function Hero() {
           {/* Countdown — lives inside Hero.jsx */}
           <Countdown />
 
-          {/* Accessible companion text for the 3D globe */}
+          {/* Accessible companion text for the observatory visual */}
           <p className="sr-only">
-            IGNITE event location: Indore, Madhya Pradesh, India.
+            Observatory dial marking Innovation, IT, Photography and Robotics around Indore, India.
           </p>
         </div>
 
