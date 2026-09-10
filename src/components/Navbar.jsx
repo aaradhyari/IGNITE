@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const NAV = [
-  { label: 'EVENTS', hash: 'events' },
   { label: 'ABOUT', hash: 'about' },
+  { label: 'EVENTS', hash: 'events' },
   { label: 'REGISTER', hash: 'register' },
 ]
 
@@ -94,7 +94,7 @@ export default function Navbar() {
             </button>
           ))}
           <span className="num-tech text-xs tracking-wide2 text-slate">
-            23 NOV 2026
+            23–24 NOV 2026
           </span>
         </div>
 
@@ -135,7 +135,7 @@ export default function Navbar() {
             IGNITE
           </span>
           <span className="num-tech text-xs tracking-wide2 text-slate">
-            23 NOV 2026
+            23–24 NOV 2026
           </span>
         </div>
         <div className="flex flex-1 flex-col justify-center gap-8 px-8">

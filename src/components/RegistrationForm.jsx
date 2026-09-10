@@ -8,18 +8,23 @@ import {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_RE = /^(\+91[-\s]?)?[6-9]\d{9}$/
 
+const GRADES = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
+
+// Sheet columns: Team Name | Member1 | Member1Grade | Member2 | Member2Grade |
+// Member3 | Member3Grade | Email | Phone | School
 function buildFields(isTeam) {
   if (isTeam) {
     return [
       { name: 'teamName', label: 'Team Name', required: true, ph: 'Nova Labs' },
-      { name: 'captainName', label: 'Captain Name', required: true, ph: 'Aarav Sharma' },
-      { name: 'class', label: 'Class', required: true, ph: 'XI' },
-      { name: 'house', label: 'House', required: true, ph: 'Emerald' },
+      { name: 'member1', label: 'Member 1', required: true, ph: 'Aarav Sharma' },
+      { name: 'member1Grade', label: 'Member 1 Grade', required: true, type: 'select', options: GRADES },
+      { name: 'member2', label: 'Member 2', required: false, ph: 'Optional' },
+      { name: 'member2Grade', label: 'Member 2 Grade', required: false, type: 'select', options: GRADES },
+      { name: 'member3', label: 'Member 3', required: false, ph: 'Optional' },
+      { name: 'member3Grade', label: 'Member 3 Grade', required: false, type: 'select', options: GRADES },
       { name: 'email', label: 'Email', required: true, type: 'email', ph: 'team@school.edu' },
       { name: 'phone', label: 'Phone', required: true, type: 'tel', ph: '9876543210' },
-      { name: 'member2', label: 'Member 2', required: false, ph: 'Optional' },
-      { name: 'member3', label: 'Member 3', required: false, ph: 'Optional' },
-      { name: 'member4', label: 'Member 4', required: false, ph: 'Optional' },
+      { name: 'school', label: 'School', required: true, ph: 'Delhi Public School' },
     ]
   }
   return [
@@ -46,7 +51,7 @@ export default function RegistrationForm({ event }) {
     fields.forEach((f) => {
       const v = (values[f.name] || '').trim()
       if (f.required && !v) {
-        errors[f.name] = 'Required'
+        errors[f.name] = f.type === 'select' ? 'Select a grade' : 'Required'
         return
       }
       if (f.name === 'email' && v && !EMAIL_RE.test(v)) {
@@ -55,6 +60,13 @@ export default function RegistrationForm({ event }) {
       if (f.name === 'phone' && v && !PHONE_RE.test(v)) {
         errors[f.name] = 'Enter a valid 10-digit mobile'
       }
+    })
+    // Paired member/grade: a grade needs its member and vice versa
+    ;['2', '3'].forEach((n) => {
+      const name = (values[`member${n}`] || '').trim()
+      const grade = (values[`member${n}Grade`] || '').trim()
+      if (name && !grade) errors[`member${n}Grade`] = 'Select a grade'
+      if (!name && grade) errors[`member${n}`] = 'Required'
     })
     return errors
   }
@@ -178,7 +190,7 @@ export default function RegistrationForm({ event }) {
                     {fields.map((f) => (
                       <div
                         key={f.name}
-                        className={f.name === 'teamName' || f.name === 'email' ? 'sm:col-span-2' : ''}
+                        className={f.name === 'teamName' || f.name === 'email' || f.name === 'school' ? 'sm:col-span-2' : ''}
                       >
                         <label
                           htmlFor={f.name}
@@ -189,19 +201,42 @@ export default function RegistrationForm({ event }) {
                             <span className="text-amber"> *</span>
                           )}
                         </label>
-                        <input
-                          id={f.name}
-                          name={f.name}
-                          type={f.type || 'text'}
-                          value={values[f.name]}
-                          onChange={onChange(f.name)}
-                          placeholder={f.ph}
-                          aria-invalid={!!state.errors[f.name]}
-                          aria-describedby={
-                            state.errors[f.name] ? `${f.name}-err` : undefined
-                          }
-                          className={inputClass(f.name)}
-                        />
+                        {f.type === 'select' ? (
+                          <select
+                            id={f.name}
+                            name={f.name}
+                            value={values[f.name]}
+                            onChange={onChange(f.name)}
+                            aria-invalid={!!state.errors[f.name]}
+                            aria-describedby={
+                              state.errors[f.name] ? `${f.name}-err` : undefined
+                            }
+                            className={`${inputClass(f.name)} appearance-none ${values[f.name] ? '' : 'text-slate'}`}
+                          >
+                            <option value="" disabled>
+                              Select grade
+                            </option>
+                            {f.options.map((g) => (
+                              <option key={g} value={g} className="bg-midnight text-ice">
+                                {g}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            id={f.name}
+                            name={f.name}
+                            type={f.type || 'text'}
+                            value={values[f.name]}
+                            onChange={onChange(f.name)}
+                            placeholder={f.ph}
+                            aria-invalid={!!state.errors[f.name]}
+                            aria-describedby={
+                              state.errors[f.name] ? `${f.name}-err` : undefined
+                            }
+                            className={inputClass(f.name)}
+                          />
+                        )}
                         {state.errors[f.name] && (
                           <p
                             id={`${f.name}-err`}

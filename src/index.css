@@ -201,6 +201,28 @@ body {
   color: #fff;
 }
 
+.btn-steel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--steel);
+  color: var(--ice);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  padding: 0.95rem 1.6rem;
+  border: 1px solid var(--charcoal);
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s;
+  cursor: pointer;
+}
+.btn-steel:hover {
+  background: var(--charcoal);
+  border-color: var(--slate);
+}
+
 /* ---------- Reveal on scroll ---------- */
 .reveal {
   opacity: 0;

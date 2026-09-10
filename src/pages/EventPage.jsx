@@ -9,12 +9,12 @@ import Rules from '../components/Rules.jsx'
 import Judging from '../components/Judging.jsx'
 import PrizeSection from '../components/PrizeSection.jsx'
 import RegistrationForm from '../components/RegistrationForm.jsx'
-import { getEventBySlug } from '../data/events.js'
+import { getEventByClub } from '../data/events.js'
 import NotFound from './NotFound.jsx'
 
 export default function EventPage() {
-  const { slug } = useParams()
-  const event = getEventBySlug(slug)
+  const { club } = useParams()
+  const event = getEventByClub(club)
 
   useEffect(() => {
     if (event) {

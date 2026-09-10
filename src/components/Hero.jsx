@@ -77,14 +77,6 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/70 to-transparent lg:hidden" />
       <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-obsidian/80 via-obsidian/30 to-transparent lg:block" />
 
-      {/* Floating technical metadata (NEAR depth) */}
-      <div className="pointer-events-none absolute left-5 top-24 hidden animate-floatySlow flex-col gap-1 lg:flex xl:left-12">
-        <span className="label-tech">OBSERVATORY // 01</span>
-        <span className="num-tech text-[10px] text-slate">
-          LAT 22.71°N · LNG 75.85°E
-        </span>
-      </div>
-
       {/* Content — single editorial column */}
       <div className="relative z-10 mx-auto w-full max-w-editorial px-5 sm:px-8 lg:px-12">
         <div className="max-w-2xl">
@@ -103,7 +95,7 @@ export default function Hero() {
 
           <div className="mt-5 flex items-center gap-3">
             <span className="h-px w-8 bg-amber/70" />
-            <span className="label-tech text-amber">23 NOVEMBER 2026</span>
+            <span className="label-tech text-amber">23–24 NOVEMBER 2026</span>
           </div>
 
           <p className="mt-6 max-w-md text-base leading-relaxed text-silver">
@@ -118,7 +110,7 @@ export default function Hero() {
             >
               Explore Events
             </button>
-            <button className="btn-ghost" onClick={() => scrollTo('register')}>
+            <button className="btn-steel" onClick={() => scrollTo('register')}>
               Register Now
             </button>
           </div>
@@ -131,18 +123,6 @@ export default function Hero() {
             Earth horizon at sunrise over a starfield. IGNITE event location: Indore, Madhya Pradesh, India.
           </p>
 
-          {/* Index strip */}
-          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-charcoal/70 pt-5">
-            <span className="num-tech text-[10px] tracking-[0.22em] text-slate">
-              SEC_01 // HERO
-            </span>
-            <span className="num-tech text-[10px] tracking-[0.22em] text-slate">
-              INDEX REF: VIS-26.11
-            </span>
-            <span className="num-tech text-[10px] tracking-[0.22em] text-slate">
-              22.72°N · 75.86°E
-            </span>
-          </div>
         </div>
       </div>
 

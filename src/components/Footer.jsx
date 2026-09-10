@@ -14,7 +14,7 @@ export default function Footer() {
             <p className="mt-3 font-display text-sm text-silver">
               Vismaya — The Age of Wonder
             </p>
-            <p className="label-tech mt-5 text-amber">23 November 2026</p>
+            <p className="label-tech mt-5 text-amber">23–24 November 2026</p>
           </div>
 
           {/* Navigate */}

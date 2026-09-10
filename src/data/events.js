@@ -59,72 +59,19 @@ export const clubs = [
 export const events = [
   // ---------------- INNOVATION ----------------
   {
-    id: 'ideaforge',
-    slug: 'ideaforge',
-    path: '/events/innovation/ideaforge',
+    id: 'venturex',
+    slug: 'venturex',
+    path: '/innovation',
     club: 'INNOVATION',
     clubId: 'innovation',
     clubColor: '#FFB800',
     number: '01',
-    title: 'IDEAFORGE',
-    tagline: 'Imagine it. Shape it. Ignite it.',
-    format: 'Team',
-    teamSize: '2–4',
-    duration: '90 minutes',
-    date: '23 November 2026',
-    venue: 'TO BE ANNOUNCED',
-    description:
-      'IDEAFORGE is a high-velocity innovation sprint. Teams take an open problem and drive it from raw curiosity to a pitched, defensible concept — no code required, only clear thinking and the courage to build something new.',
-    overview:
-      'You will not be handed a brief. You will be handed a question. IDEAFORGE rewards the teams that understand the problem deepest before they ever reach for a solution, and that can communicate a vision others want to join.',
-    flow: [
-      { stage: 'Problem', detail: 'Receive the open challenge and frame the real question.' },
-      { stage: 'Understand', detail: 'Map the people, constraints and stakes behind it.' },
-      { stage: 'Ideate', detail: 'Generate, diverge and converge on a sharp concept.' },
-      { stage: 'Build', detail: 'Prototype the idea into something tangible and testable.' },
-      { stage: 'Pitch', detail: 'Present a confident, evidence-led case to the panel.' },
-    ],
-    deliverables: [
-      'A one-page problem brief',
-      'A visual concept / low-fidelity prototype',
-      'A 3-minute final pitch',
-    ],
-    judging: [
-      { criterion: 'Innovation', percent: 25 },
-      { criterion: 'Problem Understanding', percent: 20 },
-      { criterion: 'Feasibility', percent: 20 },
-      { criterion: 'Social / Environmental Impact', percent: 20 },
-      { criterion: 'Presentation', percent: 15 },
-    ],
-    rules: [
-      'Teams of 2–4 participants from the same institution.',
-      'All ideation and building must happen within the 90-minute window.',
-      'External pre-built solutions or prior submissions are not permitted.',
-      'Judges’ decisions on scoring and eligibility are final.',
-    ],
-    prizes: [
-      { title: 'Winner', type: 'winner' },
-      { title: 'Runner-up', type: 'runnerup' },
-      { title: 'Most Innovative Idea', type: 'special' },
-      { title: 'Best Presentation', type: 'special' },
-    ],
-    specialRule:
-      'Bring a device for notes; the strongest teams document their reasoning, not just their result.',
-  },
-  {
-    id: 'venturex',
-    slug: 'venturex',
-    path: '/events/innovation/venturex',
-    club: 'INNOVATION',
-    clubId: 'innovation',
-    clubColor: '#FFB800',
-    number: '02',
     title: 'VENTUREX',
     tagline: 'From idea to impact.',
     format: 'Team',
     teamSize: '2–4',
     duration: '75 minutes',
-    date: '23 November 2026',
+    date: '23–24 November 2026',
     venue: 'TO BE ANNOUNCED',
     description:
       'VENTUREX is a live business-building race. Teams craft a venture around a market scenario, then survive a mid-event disruption that forces them to pivot and re-pitch in real time.',
@@ -169,17 +116,17 @@ export const events = [
   {
     id: 'coderush',
     slug: 'coderush',
-    path: '/events/it/coderush',
+    path: '/it',
     club: 'IT',
     clubId: 'it',
     clubColor: '#5B8CFF',
-    number: '03',
+    number: '02',
     title: 'CODERUSH',
     tagline: 'Think fast. Code faster.',
     format: 'Individual',
     teamSize: 'Individual',
     duration: '90 minutes',
-    date: '23 November 2026',
+    date: '23–24 November 2026',
     venue: 'TO BE ANNOUNCED',
     description:
       'CODERUSH is a solo coding gauntlet across three escalating stages. Logic first, then speed, then the debugging trench — where only the calm survive.',
@@ -218,17 +165,17 @@ export const events = [
   {
     id: 'frame-the-unseen',
     slug: 'frame-the-unseen',
-    path: '/events/photography/frame-the-unseen',
+    path: '/photography',
     club: 'PHOTOGRAPHY',
     clubId: 'photography',
     clubColor: '#E8E8E8',
-    number: '04',
+    number: '03',
     title: 'FRAME THE UNSEEN',
     tagline: 'Look closer. See differently.',
     format: 'Individual',
     teamSize: 'Individual',
     duration: '2 hours',
-    date: '23 November 2026',
+    date: '23–24 November 2026',
     venue: 'TO BE ANNOUNCED',
     description:
       'FRAME THE UNSEEN asks you to photograph what others walk past. A single theme, a sharp eye, and the discipline to say something true in a frame.',
@@ -272,73 +219,24 @@ export const events = [
 
   // ---------------- ROBOTICS ----------------
   {
-    id: 'robowars',
-    slug: 'robowars',
-    path: '/events/robotics/robowars',
+    id: 'havoc',
+    slug: 'havoc',
+    path: '/robotics',
     club: 'ROBOTICS',
     clubId: 'robotics',
     clubColor: '#FF5C5C',
-    number: '05',
-    title: 'ROBOWARS',
-    tagline: 'Build. Battle. Conquer.',
-    format: 'Team',
-    teamSize: '2–4',
-    duration: '2 hours',
-    date: '23 November 2026',
-    venue: 'TO BE ANNOUNCED',
-    description:
-      'ROBOWARS is engineering under fire. Build a machine, pass inspection, survive the trials, then take it into the arena where only one bot walks away.',
-    overview:
-      'Strategy is as decisive as steel. ROBOWARS rewards teams that engineer for reliability first and aggression second — because the arena punishes fragility.',
-    flow: [
-      { stage: 'Technical Inspection', detail: 'Pass safety and build compliance.' },
-      { stage: 'Arena Trials', detail: 'Prove control across the obstacle course.' },
-      { stage: 'Robo Battle', detail: 'Enter the arena and outlast the opposition.' },
-    ],
-    deliverables: [
-      'A competition-ready robot',
-      'A short engineering summary',
-    ],
-    judging: [
-      { criterion: 'Technical Trial', percent: 20 },
-      { criterion: 'Obstacle Run', percent: 20 },
-      { criterion: 'Precision Challenge', percent: 20 },
-      { criterion: 'Robo Battle', percent: 40 },
-    ],
-    rules: [
-      'Teams of 2–4 participants from the same institution.',
-      'Robots must pass technical inspection before competing.',
-      'Weight, power and weapon limits are announced at the briefing.',
-      'Sportsmanship and safe conduct are mandatory at all times.',
-    ],
-    prizes: [
-      { title: 'RoboWars Champion', type: 'winner' },
-      { title: 'Runner-up', type: 'runnerup' },
-      { title: 'Best Engineering', type: 'special' },
-      { title: 'Best Strategy', type: 'special' },
-    ],
-    specialRule:
-      'Reliability beats raw power — the bot still running at the final bell is the one that wins.',
-  },
-  {
-    id: 'autonomous-arena',
-    slug: 'autonomous-arena',
-    path: '/events/robotics/autonomous-arena',
-    club: 'ROBOTICS',
-    clubId: 'robotics',
-    clubColor: '#FF5C5C',
-    number: '06',
-    title: 'AUTONOMOUS ARENA',
+    number: '04',
+    title: 'HAVOC',
     tagline: 'No remote. No second chances.',
     format: 'Team',
     teamSize: '2–4',
     duration: '2 hours',
-    date: '23 November 2026',
+    date: '23–24 November 2026',
     venue: 'TO BE ANNOUNCED',
     description:
-      'AUTONOMOUS ARENA is pure machine intelligence. No human control, no remote — your robot must perceive, decide and complete the course on its own.',
+      'HAVOC is pure machine intelligence. No human control, no remote — your robot must perceive, decide and complete the course on its own.',
     overview:
-      'From start to finish, the system is on its own. AUTONOMOUS ARENA rewards robust sensing, sound decision-making and engineering that holds up when no one is at the sticks.',
+      'From start to finish, the system is on its own. HAVOC rewards robust sensing, sound decision-making and engineering that holds up when no one is at the sticks.',
     flow: [
       { stage: 'Start', detail: 'Initialize and self-check at the launch point.' },
       { stage: 'Navigate', detail: 'Plan a path through the arena.' },
@@ -378,6 +276,10 @@ export const events = [
 // ---- Lookups ----
 export function getEventBySlug(slug) {
   return events.find((e) => e.slug === slug)
+}
+
+export function getEventByClub(clubId) {
+  return events.find((e) => e.clubId === clubId)
 }
 
 export function getEventsByClub(clubId) {

@@ -38,7 +38,7 @@ export default function App() {
       <ScrollManager />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/events/:club/:slug" element={<EventPage />} />
+        <Route path="/:club" element={<EventPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
