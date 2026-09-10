@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "description": "IGNITE — Vismaya: The Age of Wonder. A futuristic science & innovation event website.",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
