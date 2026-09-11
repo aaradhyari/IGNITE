@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 const NAV = [
   { label: 'ABOUT', hash: 'about' },
   { label: 'EVENTS', hash: 'events' },
-  { label: 'REGISTER', hash: 'register' },
+  { label: 'TEAM', hash: 'team' },
 ]
 
 export default function Navbar() {
@@ -27,7 +27,7 @@ export default function Navbar() {
       setActive('')
       return
     }
-    const ids = ['events', 'about', 'register']
+    const ids = ['about', 'events', 'team']
     const els = ids
       .map((id) => document.getElementById(id))
       .filter(Boolean)

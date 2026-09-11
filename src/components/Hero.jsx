@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import HeroVisual from './HeroVisual.jsx'
+import { events } from '../data/events.js'
 
 // Target: 23 November 2026, 00:00 IST (UTC+5:30)
 const TARGET = new Date('2026-11-23T00:00:00+05:30').getTime()
@@ -57,6 +59,7 @@ function Countdown() {
 }
 
 export default function Hero() {
+  const navigate = useNavigate()
   const scrollTo = (id) => {
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -110,7 +113,7 @@ export default function Hero() {
             >
               Explore Events
             </button>
-            <button className="btn-steel" onClick={() => scrollTo('register')}>
+            <button className="btn-steel" onClick={() => navigate(events[0].path)}>
               Register Now
             </button>
           </div>
