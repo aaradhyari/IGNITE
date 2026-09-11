@@ -4,6 +4,7 @@ import Hero from '../components/Hero.jsx'
 import About from '../components/About.jsx'
 import ClubShowcase from '../components/ClubShowcase.jsx'
 import OurTeam from '../components/OurTeam.jsx'
+import Contact from '../components/Contact.jsx'
 import Footer from '../components/Footer.jsx'
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
         <About />
         <ClubShowcase />
         <OurTeam />
+        <Contact />
       </main>
       <Footer />
     </>

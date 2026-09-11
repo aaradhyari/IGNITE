@@ -5,6 +5,7 @@ const NAV = [
   { label: 'ABOUT', hash: 'about' },
   { label: 'EVENTS', hash: 'events' },
   { label: 'TEAM', hash: 'team' },
+  { label: 'CONTACT', hash: 'contact' },
 ]
 
 export default function Navbar() {
@@ -27,7 +28,7 @@ export default function Navbar() {
       setActive('')
       return
     }
-    const ids = ['about', 'events', 'team']
+    const ids = ['about', 'events', 'team', 'contact']
     const els = ids
       .map((id) => document.getElementById(id))
       .filter(Boolean)
