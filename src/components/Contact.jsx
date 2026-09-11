@@ -54,17 +54,9 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative scroll-mt-24 border-t border-charcoal"
+      className="relative scroll-mt-24 border-t border-charcoal py-24 sm:py-32 lg:py-40"
     >
-      <div className="relative overflow-hidden border-b border-charcoal bg-gradient-to-b from-midnight via-midnight to-graphite/40 py-24 sm:py-32 lg:py-40">
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, var(--color-amber) 1px, transparent 0)',
-          backgroundSize: '32px 32px',
-        }} />
-        <div className="absolute top-0 right-0 h-px w-1/3 bg-gradient-to-l from-amber/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 h-px w-1/3 bg-gradient-to-r from-amber/40 to-transparent" />
-
-        <div className="mx-auto max-w-editorial px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-editorial px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-5">
               <Reveal>
@@ -245,7 +237,6 @@ export default function Contact() {
                 </form>
               </Reveal>
             </div>
-          </div>
         </div>
       </div>
     </section>
