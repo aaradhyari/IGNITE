@@ -25,7 +25,8 @@ export default function Admin() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
-  const [openRow, setOpenRow] = useState(null)
+  const [selectedRow, setSelectedRow] = useState(null)
+  const [tab, setTab] = useState('unreplied') // 'unreplied' | 'replied'
   const [subject, setSubject] = useState('')
   const [body, setBody] = useState('')
   const [sending, setSending] = useState(false)
@@ -73,18 +74,22 @@ export default function Admin() {
     setDraftKey('')
     setAuthed(false)
     setQueries([])
+    setSelectedRow(null)
     sessionStorage.removeItem(KEY_STORE)
   }
 
-  const openReply = (q) => {
-    setOpenRow(q.row)
+  const selectQuery = (q) => {
+    setSelectedRow(q.row)
     setSubject(`Re: your query about ${q.event || 'IGNITE'}`)
     setBody(`Hi ${q.name || 'there'},\n\n`)
     setNotice('')
+    setError('')
   }
 
-  const sendReply = async (q) => {
-    if (!body.trim()) return
+  const selected = queries.find((q) => q.row === selectedRow) || null
+
+  const sendReply = async () => {
+    if (!selected || !body.trim()) return
     setSending(true)
     setError('')
     try {
@@ -94,9 +99,9 @@ export default function Admin() {
         body: new URLSearchParams({
           action: 'send-reply',
           key,
-          row: String(q.row),
-          to: q.email,
-          subject: subject.trim() || `Re: your query about ${q.event || 'IGNITE'}`,
+          row: String(selected.row),
+          to: selected.email,
+          subject: subject.trim() || `Re: your query about ${selected.event || 'IGNITE'}`,
           body: body.trim(),
         }),
       })
@@ -104,11 +109,10 @@ export default function Admin() {
       // no-cors is opaque — treat "no network error" as sent (proven pattern)
       setQueries((qs) =>
         qs.map((x) =>
-          x.row === q.row ? { ...x, replied: 'Replied just now' } : x,
+          x.row === selected.row ? { ...x, replied: 'Replied just now' } : x,
         ),
       )
-      setOpenRow(null)
-      setNotice(`Reply sent to ${q.email}. Marked as replied in the sheet.`)
+      setNotice(`Reply sent to ${selected.email}. Marked as replied in the sheet.`)
     } catch (e) {
       setError('Could not send the reply. Check connection and retry.')
     } finally {
@@ -117,6 +121,16 @@ export default function Admin() {
   }
 
   const pending = queries.filter((q) => !q.replied).length
+  const repliedCount = queries.length - pending
+  const visible = tab === 'unreplied'
+    ? queries.filter((q) => !q.replied)
+    : queries.filter((q) => q.replied)
+
+  const switchTab = (t) => {
+    setTab(t)
+    setSelectedRow(null)
+    setNotice('')
+  }
 
   return (
     <div className="relative mx-auto min-h-screen max-w-editorial px-5 py-14 sm:px-8 lg:px-12">
@@ -175,6 +189,30 @@ export default function Admin() {
           <p className="label-tech text-slate">
             {queries.length} total · {pending} awaiting reply
           </p>
+          <div className="mt-4 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => switchTab('unreplied')}
+              className={`label-tech border px-4 py-2 transition-colors duration-200 ${
+                tab === 'unreplied'
+                  ? 'border-amber/70 bg-amber/10 text-amber'
+                  : 'border-charcoal text-slate hover:border-slate'
+              }`}
+            >
+              Unreplied · {pending}
+            </button>
+            <button
+              type="button"
+              onClick={() => switchTab('replied')}
+              className={`label-tech border px-4 py-2 transition-colors duration-200 ${
+                tab === 'replied'
+                  ? 'border-amber/70 bg-amber/10 text-amber'
+                  : 'border-charcoal text-slate hover:border-slate'
+              }`}
+            >
+              Replied · {repliedCount}
+            </button>
+          </div>
           {notice && (
             <p className="mt-4 border-l-2 border-amber bg-graphite/40 px-4 py-3 text-sm text-silver">
               {notice}
@@ -186,58 +224,99 @@ export default function Admin() {
             </p>
           )}
 
-          <div className="mt-6 flex flex-col gap-4">
-            {queries.length === 0 && !loading && (
-              <p className="border border-charcoal bg-graphite/40 px-5 py-8 text-center text-sm text-slate">
-                No queries yet. New questions from the contact form will appear here.
+          <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
+            {/* LEFT — query list (filtered by right-side tabs) */}
+            <div className="lg:col-span-5">
+              <p className="label-tech mb-3 text-slate">
+                Queries — {tab === 'unreplied' ? 'Unreplied' : 'Replied'} ({visible.length})
               </p>
-            )}
-            {queries.map((q) => (
-              <article
-                key={q.row}
-                className="border border-charcoal bg-graphite/40 p-5 sm:p-6"
-              >
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                  <h2 className="font-display text-lg font-bold text-ice">
-                    {q.name || 'Unnamed'}
-                  </h2>
-                  <span className="label-tech text-amber">{q.event || 'General'}</span>
-                  {q.replied ? (
-                    <span className="label-tech border border-amber/50 px-2 py-1 text-amber">
-                      ✓ {q.replied}
-                    </span>
-                  ) : (
-                    <span className="label-tech border border-charcoal px-2 py-1 text-slate">
-                      Awaiting reply
-                    </span>
-                  )}
-                  <span className="num-tech ml-auto text-xs text-slate">
-                    {fmtDate(q.submittedAt)}
-                  </span>
-                </div>
-                <p className="mt-1 text-xs text-slate break-all">{q.email}</p>
-                <p className="mt-3 border-l-2 border-charcoal pl-4 text-sm leading-relaxed text-silver">
-                  {q.message}
-                </p>
+              <div className="flex max-h-[70vh] flex-col gap-3 overflow-y-auto pr-1">
+                {visible.length === 0 && !loading && (
+                  <p className="border border-charcoal bg-graphite/40 px-5 py-8 text-center text-sm text-slate">
+                    {tab === 'unreplied'
+                      ? 'Inbox zero. Nothing awaiting a reply.'
+                      : 'No replied queries yet.'}
+                  </p>
+                )}
+                {visible.map((q) => {
+                  const active = q.row === selectedRow
+                  return (
+                    <button
+                      key={q.row}
+                      type="button"
+                      onClick={() => selectQuery(q)}
+                      className={`border p-4 text-left transition-colors duration-200 ${
+                        active
+                          ? 'border-amber/70 bg-graphite'
+                          : 'border-charcoal bg-graphite/40 hover:border-slate'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="font-display text-base font-bold text-ice">
+                          {q.name || 'Unnamed'}
+                        </span>
+                        <span className="label-tech text-amber">{q.event || 'General'}</span>
+                        <span className="num-tech ml-auto text-xs text-slate">
+                          {fmtDate(q.submittedAt)}
+                        </span>
+                      </div>
+                      <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-silver">
+                        {q.message}
+                      </p>
+                      <div className="mt-2">
+                        {q.replied ? (
+                          <span className="label-tech text-amber">✓ {q.replied}</span>
+                        ) : (
+                          <span className="label-tech text-slate">Awaiting reply</span>
+                        )}
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
 
-                {openRow === q.row ? (
-                  <div className="mt-5 border-t border-charcoal pt-5">
-                    <label className="label-tech mb-2 block text-slate" htmlFor={`subj-${q.row}`}>
+            {/* RIGHT — compose */}
+            <div className="lg:col-span-7">
+              <p className="label-tech mb-3 text-slate">Compose reply</p>
+              {!selected ? (
+                <div className="flex h-64 items-center justify-center border border-dashed border-charcoal bg-graphite/20 p-8 text-center">
+                  <p className="max-w-xs text-sm leading-relaxed text-slate">
+                    Select a query from the list to compose its reply here.
+                  </p>
+                </div>
+              ) : (
+                <div className="border border-charcoal bg-graphite/40 p-5 sm:p-7 lg:sticky lg:top-24">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <h2 className="font-display text-xl font-bold text-ice">
+                      {selected.name || 'Unnamed'}
+                    </h2>
+                    <span className="label-tech text-amber">{selected.event || 'General'}</span>
+                  </div>
+                  <p className="mt-1 text-xs text-slate break-all">
+                    To: {selected.email} · {fmtDate(selected.submittedAt)}
+                  </p>
+                  <p className="mt-4 border-l-2 border-amber/60 pl-4 text-sm leading-relaxed text-silver">
+                    {selected.message}
+                  </p>
+
+                  <div className="mt-6 border-t border-charcoal pt-5">
+                    <label className="label-tech mb-2 block text-slate" htmlFor="reply-subject">
                       Subject
                     </label>
                     <input
-                      id={`subj-${q.row}`}
+                      id="reply-subject"
                       type="text"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
                       className="w-full border border-charcoal bg-midnight px-4 py-3 text-ice outline-none transition-colors duration-300 focus:border-amber"
                     />
-                    <label className="label-tech mb-2 mt-4 block text-slate" htmlFor={`body-${q.row}`}>
-                      Reply — sent from aaradhyar000@gmail.com
+                    <label className="label-tech mb-2 mt-4 block text-slate" htmlFor="reply-body">
+                      Message — sent from aaradhyar000@gmail.com
                     </label>
                     <textarea
-                      id={`body-${q.row}`}
-                      rows={5}
+                      id="reply-body"
+                      rows={8}
                       value={body}
                       onChange={(e) => setBody(e.target.value)}
                       className="w-full resize-y border border-charcoal bg-midnight px-4 py-3 text-ice outline-none transition-colors duration-300 focus:border-amber"
@@ -247,41 +326,22 @@ export default function Admin() {
                         type="button"
                         className="btn-primary"
                         disabled={sending || !body.trim()}
-                        onClick={() => sendReply(q)}
+                        onClick={sendReply}
                       >
                         {sending ? 'Sending…' : 'Send reply'}
                       </button>
                       <button
                         type="button"
                         className="btn-ghost"
-                        onClick={() => setOpenRow(null)}
+                        onClick={() => setSelectedRow(null)}
                       >
-                        Cancel
+                        Deselect
                       </button>
                     </div>
                   </div>
-                ) : (
-                  !q.replied && (
-                    <button
-                      type="button"
-                      className="btn-ghost mt-5"
-                      onClick={() => openReply(q)}
-                    >
-                      Reply
-                    </button>
-                  )
-                )}
-                {q.replied && openRow !== q.row && (
-                  <button
-                    type="button"
-                    className="btn-ghost mt-5"
-                    onClick={() => openReply(q)}
-                  >
-                    Reply again
-                  </button>
-                )}
-              </article>
-            ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
