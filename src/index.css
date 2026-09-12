@@ -179,6 +179,14 @@ body {
   border-color: var(--gold);
 }
 
+/* Larger, bolder variant — e.g. the Contact "Send Query" button */
+.btn-primary-lg {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  padding: 1.1rem 2.1rem;
+}
+
 .btn-ghost {
   display: inline-flex;
   align-items: center;

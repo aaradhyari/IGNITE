@@ -10,7 +10,7 @@
 // No private credentials are exposed in this file.
 // ============================================================
 
-export const REGISTRATION_API_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL'
+export const REGISTRATION_API_URL = 'https://script.google.com/macros/s/AKfycbyRmsF1TJGiu4J0i0ej0ii_MQq8jVqXDpnTBuqb4EUjc0J0CA4C-JRToZustUZIUSpy/exec'
 
 // Convenience flag used by the form to detect an unconfigured deployment.
 export const isRegistrationConfigured = () =>

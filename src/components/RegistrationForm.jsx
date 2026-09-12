@@ -110,16 +110,18 @@ export default function RegistrationForm({ event }) {
 
     try {
       const ctrl = new AbortController()
-      const t = setTimeout(() => ctrl.abort(), 12000)
-      const res = await fetch(REGISTRATION_API_URL, {
+      // Apps Script cold starts can be slow — don't abort a submission
+      // that is still being processed server-side.
+      const t = setTimeout(() => ctrl.abort(), 30000)
+      // Form-encoded body: Apps Script exposes it as e.parameter.
+      // Urlencoded POSTs are CORS-simple (no preflight) — the proven pattern.
+      await fetch(REGISTRATION_API_URL, {
         method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        mode: 'no-cors',
+        body: new URLSearchParams(payload),
         signal: ctrl.signal,
       })
       clearTimeout(t)
-      if (!res.ok) throw new Error('bad status ' + res.status)
       setState({ status: 'success', errors: {} })
     } catch (err) {
       setState({

@@ -1,8 +1,15 @@
 import { useState } from 'react'
 import Reveal from './Reveal.jsx'
 import { events } from '../data/events.js'
+import {
+  REGISTRATION_API_URL,
+  isRegistrationConfigured,
+} from '../config/registration.js'
 
 const CONTACT_EMAIL = 'aaradhyar000@gmail.com'
+// Auto-reply confirmations are sent from this address (the Google
+// account that deploys the Apps Script backend).
+const SENDER_EMAIL = 'aaradhyar000@gmail.com'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const EMPTY = { status: 'idle', errors: {} }
@@ -26,7 +33,7 @@ export default function Contact() {
     }
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
     const errors = {}
     if (!values.name.trim()) errors.name = 'Required'
@@ -37,11 +44,50 @@ export default function Contact() {
       setState({ status: 'idle', errors })
       return
     }
+
+    // Honest handling: if the backend is not configured,
+    // we must NOT fake a successful send.
+    if (!isRegistrationConfigured()) {
+      setState({ status: 'unconfigured', errors: {} })
+      return
+    }
+
+    setState({ status: 'loading', errors: {} })
     const event = events.find((ev) => ev.id === values.eventId)
-    const subject = `Query — ${event ? event.title : 'General'} (IGNITE Vismaya)`
-    const body = `Name: ${values.name.trim()}\nEmail: ${values.email.trim()}\nEvent: ${event ? `${event.title} (${event.club})` : 'General'}\n\n${values.message.trim()}`
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    setState({ status: 'sent', errors: {} })
+    const payload = {
+      action: 'contact-query',
+      name: values.name.trim(),
+      email: values.email.trim(),
+      eventId: values.eventId,
+      event: event ? event.title : 'General',
+      club: event ? event.club : '',
+      message: values.message.trim(),
+      submittedAt: new Date().toISOString(),
+    }
+
+    try {
+      const ctrl = new AbortController()
+      // Apps Script cold starts + two outgoing mails can take a while —
+      // don't abort while the server is still working on a send that will succeed.
+      const t = setTimeout(() => ctrl.abort(), 30000)
+      // Form-encoded body: Apps Script exposes it as e.parameter.
+      // Urlencoded POSTs are CORS-simple (no preflight) — the proven pattern.
+      await fetch(REGISTRATION_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new URLSearchParams(payload),
+        signal: ctrl.signal,
+      })
+      clearTimeout(t)
+      setState({ status: 'sent', errors: {} })
+    } catch (err) {
+      setState({
+        status: 'error',
+        errors: {},
+        message:
+          'We could not send your query. Please try again shortly.',
+      })
+    }
   }
 
   const inputClass = (name) =>
@@ -133,14 +179,18 @@ export default function Contact() {
                           />
                         </svg>
                       </div>
-                      <h3 className="font-display text-2xl text-ice">
-                        Opening your mail app.
-                      </h3>
-                      <p className="mx-auto mt-3 max-w-md text-silver">
-                        Your query about {selected ? selected.title : 'the event'} is
-                        addressed to {CONTACT_EMAIL} — just hit send in your
-                        mail app.
-                      </p>
+                    <h3 className="font-display text-2xl text-ice">
+                      Query received.
+                    </h3>
+                    <p className="mx-auto mt-3 max-w-md text-silver">
+                      Thanks{values.name.trim() ? `, ${values.name.trim().split(' ')[0]}` : ''} — we got
+                      your query about {selected ? selected.title : 'the event'}.
+                      A confirmation is on its way to {values.email.trim() || 'your inbox'} from{' '}
+                      {SENDER_EMAIL}.
+                    </p>
+                    <p className="mx-auto mt-3 max-w-md text-sm text-slate">
+                      Can't find it? Check your spam folder and mark it as not spam.
+                    </p>
                       <button
                         type="button"
                         className="btn-ghost mt-7"
@@ -226,11 +276,28 @@ export default function Contact() {
                         </div>
                       </div>
 
+                      {state.status === 'unconfigured' && (
+                        <p className="mt-6 border-l-2 border-amber bg-graphite/40 px-4 py-3 text-sm text-silver">
+                          Queries are not configured yet. Meanwhile, write to us
+                          directly at{' '}
+                          <a className="text-amber underline" href={`mailto:${CONTACT_EMAIL}`}>
+                            {CONTACT_EMAIL}
+                          </a>
+                          .
+                        </p>
+                      )}
+                      {state.status === 'error' && (
+                        <p className="mt-6 border-l-2 border-igniteRed bg-graphite/40 px-4 py-3 text-sm text-silver">
+                          {state.message}
+                        </p>
+                      )}
+
                       <button
                         type="submit"
-                        className="btn-primary mt-7 w-full justify-center sm:w-auto"
+                        className="btn-primary btn-primary-lg mt-7 w-full justify-center sm:w-auto"
+                        disabled={state.status === 'loading'}
                       >
-                        Send Query
+                        {state.status === 'loading' ? 'Sending…' : 'Send Query'}
                       </button>
                     </>
                   )}
